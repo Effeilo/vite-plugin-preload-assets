@@ -1,0 +1,16 @@
+# Node.js / Vite
+node_modules/
+dist/
+.cache/
+*.log
+
+# IDE / OS
+.vscode/
+.DS_Store
+*.swp
+*.tmp
+
+# Environnements
+.env
+.env.local
+.env.*.local
