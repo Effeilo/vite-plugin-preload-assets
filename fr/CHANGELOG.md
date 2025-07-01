@@ -15,6 +15,20 @@ et le projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 <br>
 
+## [1.2.0] – 01-07-2025
+
+### ✨ Ajout
+
+- Nouvelle option `imagesToPreload` :
+  - Permet de précharger manuellement des images critiques utilisées hors de `index.html` (ex : composants React)
+  - Injection automatique des balises `<link rel="preload" href="..." as="image">`
+
+<br>
+
+---
+
+<br>
+
 ## [1.1.1] – 30-06-2025
 
 ### 🛠️ Amélioration

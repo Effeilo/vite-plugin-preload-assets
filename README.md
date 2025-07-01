@@ -51,7 +51,56 @@ export default {
 }
 ```
 
+## Image Preloading
+
+Simply add the `data-preload` attribute to an image in your HTML:
+
+```html
+<img src="/img/logo.png" data-preload width="100" height="100" alt="Logo">
+```
+
+The plugin will automatically inject:
+
+```html
+<link rel="preload" href="/img/logo.png" as="image">
+```
+
+### Support for dark mode variants
+
+If your image also supports dark mode and is used with the [browserux-theme-switcher](https://github.com/Effeilo/browserux-theme-switcher), you can add the `has-dark` class:
+
+```html
+<img src="/img/logo.png" class="has-dark" data-preload alt="Logo">
+```
+
+This will inject both versions:
+
+```html
+<link rel="preload" href="/img/logo.png" as="image">
+<link rel="preload" href="/img/logo-dark.png" as="image">
+```
+
+This ensures both light and dark versions are loaded early and switch instantly on theme change.
+
 ## Available options
+
+### imagesToPreload
+
+Explicitly preload images that are not in `index.html` (e.g. used in React components):
+
+```js
+imagesToPreload: [
+  '/img/logo.png',
+  '/img/hero.jpg'
+]
+```
+
+This will generate:
+
+```html
+<link rel="preload" href="/img/logo.png" as="image">
+<link rel="preload" href="/img/hero.jpg" as="image">
+```
 
 ### fontsToPreload
 
@@ -139,37 +188,6 @@ criticalCss: (path) => {
   return []
 }
 ```
-
-## Image Preloading
-
-Simply add the `data-preload` attribute to an image in your HTML:
-
-```html
-<img src="/img/logo.png" data-preload width="100" height="100" alt="Logo">
-```
-
-The plugin will automatically inject:
-
-```html
-<link rel="preload" href="/img/logo.png" as="image">
-```
-
-### Support for dark mode variants
-
-If your image also supports dark mode and is used with the [browserux-theme-switcher](https://github.com/Effeilo/browserux-theme-switcher), you can add the `has-dark` class:
-
-```html
-<img src="/img/logo.png" class="has-dark" data-preload alt="Logo">
-```
-
-This will inject both versions:
-
-```html
-<link rel="preload" href="/img/logo.png" as="image">
-<link rel="preload" href="/img/logo-dark.png" as="image">
-```
-
-This ensures both light and dark versions are loaded early and switch instantly on theme change.
 
 ## How it works
 

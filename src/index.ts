@@ -39,6 +39,7 @@ type FontPreload = {
  */
 
 type PreloadAssetsOptions = {
+  imagesToPreload?: string[]
   fontsToPreload?: FontPreload[] // List of fonts to preload
   criticalJs?: string[] | ((filename: string) => string[]) // Entry names of critical JS files (without hash)
   criticalCss?: string[] | ((filename: string) => string[]) // Entry names of critical CSS files (without hash)
@@ -91,9 +92,9 @@ export default function preloadAssetsPlugin(options: PreloadAssetsOptions = {}):
 
     transformIndexHtml(html, ctx) {
       const tags: any[] = []
-      let match
+      let match: RegExpExecArray | null
 
-      // 1. Preload images with data-preload, and optionally dark variant (if has-dark class is present)
+      // 1a. Preload images with data-preload, and optionally dark variant (if has-dark class is present)
       const imgRegex = /<img[^>]*src="([^"]+)"[^>]*data-preload[^>]*>/g
       while ((match = imgRegex.exec(html)) !== null) {
         const src = match[1]
@@ -127,6 +128,21 @@ export default function preloadAssetsPlugin(options: PreloadAssetsOptions = {}):
           })
         }
       }
+
+      // 1b. Images declared manually in config (imagesToPreload)
+      if (options.imagesToPreload?.length) {
+        for (const imageUrl of options.imagesToPreload) {
+          tags.push({
+            tag: 'link',
+            injectTo: 'head-prepend',
+            attrs: {
+              rel: 'preload',
+              href: imageUrl,
+              as: 'image'
+            }
+          })
+        }
+      }  
 
       // 2. Inject <link rel="preconnect"> for Google Fonts if enabled
       if (options.preloadGoogleFonts) {

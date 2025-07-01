@@ -15,6 +15,20 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 <br>
 
+## [1.2.0] – 2025-07-01
+
+### ✨ Added
+
+- New `imagesToPreload` option:
+  - Allows manually preloading images not present in `index.html` (e.g. React components)
+  - Injects `<link rel="preload" href="..." as="image">` automatically
+
+<br>
+
+---
+
+<br>
+
 ## [1.1.1] – 2025-06-30
 
 ### 🛠️ Improvment

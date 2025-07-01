@@ -51,7 +51,54 @@ export default {
 }
 ```
 
+## Préchargement des images 
+
+Il suffit d'ajouter l'attribut data-preload sur une image dans le HTML :
+
+```html
+<img src="/img/logo.png" data-preload width="100" height="100" alt="Logo">
+```
+
+Le plugin injectera automatiquement :
+
+```html
+<link rel="preload" href="/img/logo.png" as="image">
+```
+
+### Support du mode dark
+
+Si l'image a une variante dark et qu'on utilise le Web Component [browserux-theme-switcher](https://github.com/Effeilo/browserux-theme-switcher), on peut ajouter la classe `has-dark` :
+
+```html
+<img src="/img/logo.png" class="has-dark" data-preload alt="Logo">
+```
+
+Le plugin injectera alors les deux versions :
+
+```html
+<link rel="preload" href="/img/logo.png" as="image">
+<link rel="preload" href="/img/logo-dark.png" as="image">
+```
+
 ## Paramètres disponibles
+
+### imagesToPreload
+
+Permet de précharger manuellement des images critiques utilisées hors de `index.html` (ex: dans des composants React) :
+
+```js
+imagesToPreload: [
+  '/img/logo.png',
+  '/img/hero.jpg'
+]
+```
+
+Le plugin injectera automatiquement :
+
+```html
+<link rel="preload" href="/img/logo.png" as="image">
+<link rel="preload" href="/img/hero.jpg" as="image">
+```
 
 ### fontsToPreload
 
@@ -137,35 +184,6 @@ criticalCss: (path) => {
   if (path.includes('/blog/')) return ['blog']
   return []
 }
-```
-
-## Préchargement des images 
-
-Il suffit d'ajouter l'attribut data-preload sur une image dans le HTML :
-
-```html
-<img src="/img/logo.png" data-preload width="100" height="100" alt="Logo">
-```
-
-Le plugin injectera automatiquement :
-
-```html
-<link rel="preload" href="/img/logo.png" as="image">
-```
-
-### Support du mode dark
-
-Si l'image a une variante dark et qu'on utilise le Web Component [browserux-theme-switcher](https://github.com/Effeilo/browserux-theme-switcher), on peut ajouter la classe `has-dark` :
-
-```html
-<img src="/img/logo.png" class="has-dark" data-preload alt="Logo">
-```
-
-Le plugin injectera alors les deux versions :
-
-```html
-<link rel="preload" href="/img/logo.png" as="image">
-<link rel="preload" href="/img/logo-dark.png" as="image">
 ```
 
 ## Fonctionnement
