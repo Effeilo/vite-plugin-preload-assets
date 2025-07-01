@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 <br>
 
+## [1.1.1] – 2025-06-30
+
+### 🛠️ Improvment
+
+- Compatibility with Vite v6 (added `^6.0.0` in `peerDependencies`)
+
+<br>
+
+---
+
+<br>
+
 ## [1.1.0] – 2025-06-30
 
 ### ✨ Added
@@ -23,6 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org).
   - If an image has the class `has-dark`, the plugin will automatically preload the corresponding `*-dark.ext` version.
   - Compatible with [`browserux-theme-switcher`](https://github.com/Effeilo/browserux-theme-switcher)
 
+<br>
+
+---
+
+<br>
 
 ## [1.0.0] – 2025-06-29
 

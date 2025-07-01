@@ -15,6 +15,18 @@ et le projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 <br>
 
+## [1.1.1] – 30-06-2025
+
+### 🛠️ Amélioration
+
+- Compatibilité avec Vite v6 (ajout de `^6.0.0` dans `peerDependencies`)
+
+<br>
+
+---
+
+<br>
+
 ## [1.1.0] – 30-06-2025
 
 ### ✨ Ajout
