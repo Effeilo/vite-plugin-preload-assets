@@ -15,7 +15,21 @@ et le projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 <br>
 
-## [1.0.0] – 2025-06-29
+## [1.1.0] – 30-06-2025
+
+### ✨ Ajout
+
+- Prise en charge des variantes dark des images :
+  - Si une image possède la classe `has-dark`, le plugin précharge automatiquement la version correspondante en `*-dark.ext`
+  - Compatible avec [`browserux-theme-switcher`](https://github.com/Effeilo/browserux-theme-switcher)
+
+<br>
+
+---
+
+<br>
+
+## [1.0.0] – 29-06-2025
 
 ### ✨ Ajout
 

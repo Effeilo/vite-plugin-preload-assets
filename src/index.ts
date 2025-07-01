@@ -38,7 +38,7 @@ type FontPreload = {
  * Configuration options for the autoPreloadPlugin.
  */
 
-type AutoPreloadOptions = {
+type PreloadAssetsOptions = {
   fontsToPreload?: FontPreload[] // List of fonts to preload
   criticalJs?: string[] | ((filename: string) => string[]) // Entry names of critical JS files (without hash)
   criticalCss?: string[] | ((filename: string) => string[]) // Entry names of critical CSS files (without hash)
@@ -74,36 +74,58 @@ function getRelativeHtmlPath(filename: string): string {
 }
 
 /**
- * Vite plugin to auto-inject <link rel="preload"> and <link rel="preconnect"> tags
- * for critical resources (images, fonts, JS, CSS) during the build phase.
+ * Vite plugin to automatically inject <link rel="preload"> and <link rel="preconnect">
+ * for critical resources: JS, CSS, fonts, and images (including dark mode variants).
  */
 
-export default function autoPreloadPlugin(options: AutoPreloadOptions = {}): Plugin {
+export default function preloadAssetsPlugin(options: PreloadAssetsOptions = {}): Plugin {
   return {
-    name: 'vite-plugin-preload-assets',
-    apply: 'build',
 
     /**
      * Runs during the HTML transformation phase in Vite's build process.
      * Injects preload/preconnect tags into the <head> of index.html.
      */
 
+    name: 'vite-plugin-preload-assets',
+    apply: 'build',
+
     transformIndexHtml(html, ctx) {
       const tags: any[] = []
       let match
 
-      // 1. Preload <img> tags marked with data-preload
+      // 1. Preload images with data-preload, and optionally dark variant (if has-dark class is present)
       const imgRegex = /<img[^>]*src="([^"]+)"[^>]*data-preload[^>]*>/g
       while ((match = imgRegex.exec(html)) !== null) {
+        const src = match[1]
+
+        // Preload the base image
         tags.push({
           tag: 'link',
           injectTo: 'head-prepend',
           attrs: {
             rel: 'preload',
-            href: match[1],
+            href: src,
             as: 'image'
           }
         })
+
+        // If image has class "has-dark", preload the dark version as well
+        const hasDarkClass = /class="[^"]*\bhas-dark\b[^"]*"/.test(match[0])
+
+        if (hasDarkClass) {
+          // e.g. logo.png → logo-dark.png
+          const darkSrc = src.replace(/(\.[\w]+)$/, '-dark$1')
+
+          tags.push({
+            tag: 'link',
+            injectTo: 'head-prepend',
+            attrs: {
+              rel: 'preload',
+              href: darkSrc,
+              as: 'image'
+            }
+          })
+        }
       }
 
       // 2. Inject <link rel="preconnect"> for Google Fonts if enabled

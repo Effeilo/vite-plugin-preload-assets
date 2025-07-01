@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 <br>
 
+## [1.1.0] – 2025-06-30
+
+### ✨ Added
+
+- Support for dark mode image variants:
+  - If an image has the class `has-dark`, the plugin will automatically preload the corresponding `*-dark.ext` version.
+  - Compatible with [`browserux-theme-switcher`](https://github.com/Effeilo/browserux-theme-switcher)
+
+
 ## [1.0.0] – 2025-06-29
 
 ### ✨ Added

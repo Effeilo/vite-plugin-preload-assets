@@ -14,6 +14,7 @@
 ## Fonctionnalités
 
 - 📷 Précharge automatiquement les images marquées avec `data-preload`
+- 🌗 Gère les variantes dark (si utilisation de [browserux-theme-switcher](https://github.com/Effeilo/browserux-theme-switcher)) et les précharge également (ex: `logo-dark.png`)
 - 🔤 Précharge les polices via la configuration (`fontsToPreload`)
 - 🧠 Précharge les fichiers JS/CSS critiques en les retrouvant dynamiquement dans le bundle via des noms fournis dans la config
 - 🌐 Ajoute automatiquement les balises `<link rel="preconnect">` pour Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`)
@@ -30,11 +31,11 @@ npm install vite-plugin-preload-assets --save-dev
 Dans le fichier `vite.config.ts`, `vite.config.js` ou `vite.config.mjs` :
 
 ```js
-import autoPreloadPlugin from 'vite-plugin-preload-assets'
+import preloadAssetsPlugin from 'vite-plugin-preload-assets'
 
 export default {
     plugins: [
-        autoPreloadPlugin({
+        preloadAssetsPlugin({
             preloadGoogleFonts: true,
             fontsToPreload: [
                 {
@@ -140,7 +141,7 @@ criticalCss: (path) => {
 
 ## Préchargement des images 
 
-Il te suffit d'ajouter l'attribut data-preload sur une image dans le HTML :
+Il suffit d'ajouter l'attribut data-preload sur une image dans le HTML :
 
 ```html
 <img src="/img/logo.png" data-preload width="100" height="100" alt="Logo">
@@ -150,6 +151,21 @@ Le plugin injectera automatiquement :
 
 ```html
 <link rel="preload" href="/img/logo.png" as="image">
+```
+
+### Support du mode dark
+
+Si l'image a une variante dark et qu'on utilise le Web Component [browserux-theme-switcher](https://github.com/Effeilo/browserux-theme-switcher), on peut ajouter la classe `has-dark` :
+
+```html
+<img src="/img/logo.png" class="has-dark" data-preload alt="Logo">
+```
+
+Le plugin injectera alors les deux versions :
+
+```html
+<link rel="preload" href="/img/logo.png" as="image">
+<link rel="preload" href="/img/logo-dark.png" as="image">
 ```
 
 ## Fonctionnement
