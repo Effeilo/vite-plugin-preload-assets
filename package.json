@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-preload-assets",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Optimizes performance by automatically injecting preload and preconnect tags for critical resources with Vite (JS, CSS, fonts, images).",
   "type": "module",
   "main": "./dist/index.js",

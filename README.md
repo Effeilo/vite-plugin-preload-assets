@@ -124,6 +124,8 @@ fontsToPreload: [
 - You can override the `as` attribute (`'font'` by default) to support custom cases like Google Fonts CSS.
 - If you're preloading a CSS file from Google Fonts, use `as: 'style'`.
 
+> If `a` is not set to `'font'`, the plugin will automatically skip the `type` attribute to avoid preload warnings.
+
 ### preloadGoogleFonts
 
 Automatically injects the `preconnect` tags needed to optimize the loading of Google Fonts:

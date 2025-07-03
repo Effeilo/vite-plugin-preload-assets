@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 <br>
 
+## [1.2.3] – 2025-07-03
+
+### 🛠️ Fixed
+
+- `type="font/woff2"` is now only added when `as === 'font'`
+- Prevents browser warnings when preloading Google Fonts CSS with `as: 'style'`
+  
+<br>
+
+---
+
+<br>
+
 ## [1.2.2] – 2025-07-03
 
 ### ✨ Added

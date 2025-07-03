@@ -15,6 +15,19 @@ et le projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 <br>
 
+## [1.2.3] – 03-07-2025
+
+### 🛠️ Correction
+
+- L’attribut `type="font/woff2"` n’est ajouté que si `as === 'font'`
+- Évite les avertissements du navigateur lors du preload de feuilles CSS Google Fonts avec `as: 'style'`
+  
+<br>
+
+---
+
+<br>
+
 ## [1.2.2] – 03-07-2025
 
 ### ✨ Ajout

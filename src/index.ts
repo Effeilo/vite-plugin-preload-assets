@@ -172,14 +172,16 @@ export default function preloadAssetsPlugin(options: PreloadAssetsOptions = {}):
       // 3. Preload fonts manually defined in config  
       if (options.fontsToPreload) {
         for (const font of options.fontsToPreload) {
+          const as = font.as || 'font'
+
           tags.push({
             tag: 'link',
             injectTo: 'head-prepend',
             attrs: {
               rel: 'preload',
               href: font.href,
-              as: font.as || 'font',
-              type: font.type || 'font/woff2',
+              as,
+              ...(as === 'font' ? { type: font.type || 'font/woff2' } : {}),
               ...(font.crossorigin ? { crossorigin: '' } : {})
             }
           })

@@ -122,6 +122,8 @@ fontsToPreload: [
 - Vous pouvez surcharger l’attribut `as` (`'font'` par défaut) pour des cas spécifiques, comme Google Fonts.
 - Si vous préchargez une feuille de style CSS depuis Google Fonts, utilisez `as: 'style'`.
 
+> Si `as` est différent de `'font'`, le plugin ignorera automatiquement l’attribut `type` pour éviter les avertissements du navigateur.
+
 ### preloadGoogleFonts
 
 Permet d’injecter automatiquement les balises `preconnect` nécessaires à l’optimisation du chargement des polices Google Fonts :
