@@ -113,13 +113,14 @@ fontsToPreload: [
   },
   {
     href: 'https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap',
-    type: 'font/woff2',
+    as: 'style',                 // Permet de surcharger le type (par défaut : 'font')
     crossorigin: true
   }
 ]
 ```
 
-> Si Google Fonts est utilisé, on peut inclure leur URL CSS directement en preload. Crossorigin doit être présent pour éviter les erreurs de CORS.
+- Vous pouvez surcharger l’attribut `as` (`'font'` par défaut) pour des cas spécifiques, comme Google Fonts.
+- Si vous préchargez une feuille de style CSS depuis Google Fonts, utilisez `as: 'style'`.
 
 ### preloadGoogleFonts
 

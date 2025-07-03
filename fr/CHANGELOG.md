@@ -15,6 +15,19 @@ et le projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 <br>
 
+## [1.2.2] – 03-07-2025
+
+### ✨ Ajout
+
+- Ajout de la possibilité de surcharger l’attribut `as` dans `fontsToPreload`
+  - Utile pour précharger une feuille de style Google Fonts via `as: 'style'`
+  
+<br>
+
+---
+
+<br>
+
 ## [1.2.0] – 01-07-2025
 
 ### ✨ Ajout

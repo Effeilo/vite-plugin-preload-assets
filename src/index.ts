@@ -31,6 +31,7 @@ import { relative } from 'path'
 type FontPreload = {
   href: string // URL of the font file (relative or absolute)
   type?: string // MIME type of the font (default: 'font/woff2')
+  as?: 'font' | 'style'
   crossorigin?: boolean // Whether to add the crossorigin attribute
 }
 
@@ -177,7 +178,7 @@ export default function preloadAssetsPlugin(options: PreloadAssetsOptions = {}):
             attrs: {
               rel: 'preload',
               href: font.href,
-              as: 'font',
+              as: font.as || 'font',
               type: font.type || 'font/woff2',
               ...(font.crossorigin ? { crossorigin: '' } : {})
             }
@@ -206,7 +207,8 @@ export default function preloadAssetsPlugin(options: PreloadAssetsOptions = {}):
                 attrs: {
                   rel: 'preload',
                   href: '/' + fileName,
-                  as: 'style'
+                  as: 'style',
+                  crossorigin: ''
                 }
               })
             }
@@ -232,7 +234,8 @@ export default function preloadAssetsPlugin(options: PreloadAssetsOptions = {}):
                 attrs: {
                   rel: 'preload',
                   href: '/' + fileName,
-                  as: 'script'
+                  as: 'script',
+                  crossorigin: ''
                 }
               })
             }

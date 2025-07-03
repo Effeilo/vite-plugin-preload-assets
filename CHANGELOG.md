@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 <br>
 
+## [1.2.2] – 2025-07-03
+
+### ✨ Added
+
+- Support for overriding the `as` attribute in `fontsToPreload`
+  - Useful for preloading Google Fonts CSS with `as: 'style'`
+  
+<br>
+
+---
+
+<br>
+
 ## [1.2.0] – 2025-07-01
 
 ### ✨ Added

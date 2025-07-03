@@ -115,18 +115,18 @@ fontsToPreload: [
   },
   {
     href: 'https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap',
-    type: 'font/woff2',
+    as: 'style',                 // Override preload type (default: 'font')
     crossorigin: true
   }
 ]
 ```
 
-> If you're using Google Fonts, you can include their CSS URL directly as a preload. Make sure to add `crossorigin` to avoid CORS issues.
+- You can override the `as` attribute (`'font'` by default) to support custom cases like Google Fonts CSS.
+- If you're preloading a CSS file from Google Fonts, use `as: 'style'`.
 
 ### preloadGoogleFonts
 
 Automatically injects the `preconnect` tags needed to optimize the loading of Google Fonts:
-
 
 ```js
 preloadGoogleFonts: true
