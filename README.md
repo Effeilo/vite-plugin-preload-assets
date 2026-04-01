@@ -1,7 +1,7 @@
 **EN** | [FR](./fr/README.md)
 
 <div>
-  <img src="https://browserux.com/assets/img/logo/logo-vite-plugin-preload-assets.png" alt="logo vite-plugin-preload-assets"/>
+  <img src="https://browserux.com/img/logos/logo-browserux-preload-assets-300.png" alt="logo vite-plugin-preload-assets"/>
 </div>
 
 # vite-plugin-preload-assets
@@ -13,20 +13,27 @@
 
 ## Features
 
-- 📷 Automatically preloads images marked with `data-preload`
+- 📷 Automatically preloads images marked with `data-preload` — attribute order independent
+- 🖼️ Supports `srcset`: all candidate URLs are preloaded automatically
+- ⚡ Adds `fetchpriority="high"` on explicitly preloaded images
 - 🌗 Handles dark mode variants (when using [browserux-theme-switcher](https://github.com/Effeilo/browserux-theme-switcher)) and preloads them as well (e.g. `logo-dark.png`)
-- 🔤 Preloads fonts via configuration (`fontsToPreload`)
-- 🧠 Preloads critical JS/CSS files by matching configured names dynamically in the build output
+- 🔤 Preloads fonts via configuration (`fontsToPreload`) — `crossorigin` added automatically per spec
+- 🧠 Uses `rel="modulepreload"` for critical JS files (correct for Vite's ESM output)
+- 🎨 Preloads critical CSS files by matching configured names dynamically in the build output
 - 🌐 Automatically injects `<link rel="preconnect">` tags for Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`)
+- 🔁 Deduplicates injected tags — no duplicate hints even across config and HTML
 - 🚀 Optimizes initial load performance with zero manual effort
 - 🧼 No manual HTML changes required
+
+> **Note:** This plugin only runs during `vite build`. Preload tags are not injected in development mode.
 
 ## Installation
 
 ```bash
 npm install vite-plugin-preload-assets --save-dev
 ```
-## Utilisation
+
+## Usage
 
 In the `vite.config.ts`, `vite.config.js`, or `vite.config.mjs` file:
 
@@ -40,8 +47,7 @@ export default {
             fontsToPreload: [
                 {
                     href: '/fonts/Inter.woff2',
-                    type: 'font/woff2',
-                    crossorigin: true
+                    type: 'font/woff2'
                 }
             ],
             criticalJs: ['main'],
@@ -62,7 +68,30 @@ Simply add the `data-preload` attribute to an image in your HTML:
 The plugin will automatically inject:
 
 ```html
-<link rel="preload" href="/img/logo.png" as="image">
+<link rel="preload" href="/img/logo.png" as="image" fetchpriority="high">
+```
+
+The `data-preload` attribute can be placed anywhere on the tag — before or after `src`.
+
+### Support for srcset
+
+If the image has a `srcset` attribute, all candidate URLs are preloaded:
+
+```html
+<img
+  src="/img/hero.jpg"
+  srcset="/img/hero-400.jpg 400w, /img/hero-800.jpg 800w"
+  data-preload
+  alt="Hero"
+>
+```
+
+This will inject:
+
+```html
+<link rel="preload" href="/img/hero.jpg" as="image" fetchpriority="high">
+<link rel="preload" href="/img/hero-400.jpg" as="image">
+<link rel="preload" href="/img/hero-800.jpg" as="image">
 ```
 
 ### Support for dark mode variants
@@ -76,7 +105,7 @@ If your image also supports dark mode and is used with the [browserux-theme-swit
 This will inject both versions:
 
 ```html
-<link rel="preload" href="/img/logo.png" as="image">
+<link rel="preload" href="/img/logo.png" as="image" fetchpriority="high">
 <link rel="preload" href="/img/logo-dark.png" as="image">
 ```
 
@@ -98,8 +127,8 @@ imagesToPreload: [
 This will generate:
 
 ```html
-<link rel="preload" href="/img/logo.png" as="image">
-<link rel="preload" href="/img/hero.jpg" as="image">
+<link rel="preload" href="/img/logo.png" as="image" fetchpriority="high">
+<link rel="preload" href="/img/hero.jpg" as="image" fetchpriority="high">
 ```
 
 ### fontsToPreload
@@ -110,8 +139,7 @@ List of fonts to preload manually.
 fontsToPreload: [
   {
     href: '/fonts/Inter.woff2',  // URL (relative or absolute)
-    type: 'font/woff2',          // MIME type (default : 'font/woff2')
-    crossorigin: true            // add the `crossorigin` attribute
+    type: 'font/woff2',          // MIME type (default: 'font/woff2')
   },
   {
     href: 'https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap',
@@ -124,7 +152,9 @@ fontsToPreload: [
 - You can override the `as` attribute (`'font'` by default) to support custom cases like Google Fonts CSS.
 - If you're preloading a CSS file from Google Fonts, use `as: 'style'`.
 
-> If `a` is not set to `'font'`, the plugin will automatically skip the `type` attribute to avoid preload warnings.
+> **`crossorigin` is now automatic for font preloads.** Per the HTML spec, font preloads always require `crossorigin`, even for same-origin fonts — omitting it causes the browser to silently ignore the hint. The plugin adds it automatically when `as === 'font'`. You no longer need to specify `crossorigin: true` for local fonts.
+
+> If `as` is not set to `'font'`, the plugin will automatically skip the `type` attribute to avoid preload warnings.
 
 ### preloadGoogleFonts
 
@@ -155,6 +185,14 @@ This will match files like:
 - `/assets/main-abc123.js`
 - `/assets/app-def456.js`
 
+And inject `rel="modulepreload"` tags (correct for Vite's ESM output):
+
+```html
+<link rel="modulepreload" href="/assets/main-abc123.js" crossorigin>
+```
+
+> **Why `modulepreload` instead of `preload`?** Vite bundles ES modules by default. `rel="modulepreload"` is semantically correct for ESM: it both preloads and parses the module graph, and always operates in CORS mode.
+
 #### Advanced usage (per page):
 
 ```js
@@ -167,7 +205,7 @@ criticalJs: (path) => {
 
 This allows per-page targeting in multi-page apps.
 
-### criticalCss 
+### criticalCss
 
 Same as `criticalJs`, but for generated CSS files.
 
@@ -193,30 +231,31 @@ criticalCss: (path) => {
 
 ## How it works
 
-- The plugin runs during the build phase (using the `transformIndexHtml` hook)
+- The plugin runs during the build phase only (using the `transformIndexHtml` hook)
 - It scans the HTML and the Vite bundle
 - It injects `<link rel="preload">` tags at the very beginning of the `<head>` (`head-prepend`)
+- Duplicate tags (same `rel` + `href`) are automatically deduplicated
 
 ## Best Practices
 
-Using `preload` can improve perceived performance — but only when used wisely.
+Using `preload` can improve perceived performance, but only when used wisely.
 
 Here are some tips:
 
-- Only preload what’s essential
-- Don’t use `preload` on all images — this can unnecessarily overload the network.
+- Only preload what's essential
+- Don't use `preload` on all images, this can unnecessarily overload the network.
 - Preload only:
   - Critical fonts used immediately
   - Images visible above the fold
   - JS or CSS files required for the initial render
 - Avoid preloading secondary assets
 - Do not preload decorative background images or non-critical assets.
-- Don’t preload all JS chunks — use `criticalJs` only for main entry files.
-- Don’t replace `prefetch` or `lazy loading`
+- Don't preload all JS chunks, use `criticalJs` only for main entry files.
+- Don't replace `prefetch` or `lazy loading`
 - `preload` is not a substitute for `loading="lazy"` on images.
 
-> Goal: help the browser prioritize the loading of truly critical resources — not to load everything upfront, which can have the opposite effect.
+> Goal: help the browser prioritize the loading of truly critical resources, not to load everything upfront, which can have the opposite effect.
 
 ## License
 
-**MIT License** — Free to use, modify, and distribute.
+**MIT License**, Free to use, modify, and distribute.

@@ -1,7 +1,7 @@
 [EN](../CHANGELOG.md) | **FR**
 
 <div>
-  <img src="https://browserux.com/assets/img/logo/logo-vite-plugin-preload-assets.png" alt="logo vite-plugin-preload-assets"/>
+  <img src="https://browserux.com/img/logos/logo-browserux-preload-assets-300.png" alt="logo vite-plugin-preload-assets"/>
 </div>
 
 # 📦 Changelog
@@ -15,13 +15,38 @@ et le projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 <br>
 
+## [1.3.0] – 01-04-2026
+
+### ✨ Ajout
+
+- **Support du `srcset` :** les images avec un attribut `srcset` ont désormais toutes leurs URL candidates préchargées automatiquement
+- **`fetchpriority="high"`** est maintenant injecté sur toutes les images explicitement préchargées (`data-preload` et `imagesToPreload`) pour renforcer la priorité de chargement
+- **Déduplication des balises :** les hints identiques (même `rel` + `href`) sont dédupliqués — aucun doublon même si la même URL apparaît à la fois dans le HTML et dans la config
+- **Tests unitaires :** 39 tests couvrant toutes les fonctionnalités via [Vitest](https://vitest.dev)
+
+### 🛠️ Corrections
+
+- **`crossorigin` automatique pour les polices :** conformément à la spec HTML, le préchargement de polices nécessite toujours l'attribut `crossorigin`, même pour les polices same-origin. Son absence amenait le navigateur à ignorer silencieusement le hint. L'attribut est désormais ajouté automatiquement quand `as === 'font'`. Il n'est plus nécessaire de spécifier `crossorigin: true` pour les polices locales
+- **`rel="modulepreload"` pour les fichiers JS :** remplace `rel="preload" as="script"` par `rel="modulepreload"`, sémantiquement correct pour la sortie ESM de Vite et permettant le parsing du graphe de modules
+- **Détection des images indépendante de l'ordre des attributs :** `data-preload` est désormais détecté quelle que soit sa position sur la balise `<img>` — il n'est plus obligatoire de le placer après `src`
+- **Suppression du `crossorigin` inutile sur les CSS same-origin :** ajouter `crossorigin` sur des preloads CSS same-origin pouvait provoquer des incohérences de cache ; il est désormais omis
+- **Suppression du code mort** dans la résolution `criticalCss` / `criticalJs` (branche `?.[currentPath]` jamais atteignable)
+- **Suppression de la garde redondante `ctx &&`** — `ctx` est toujours défini dans `transformIndexHtml`
+- **Tableau `tags` typé** en `HtmlTagDescriptor[]` au lieu de `any[]`
+
+<br>
+
+---
+
+<br>
+
 ## [1.2.3] – 03-07-2025
 
 ### 🛠️ Correction
 
-- L’attribut `type="font/woff2"` n’est ajouté que si `as === 'font'`
+- L'attribut `type="font/woff2"` n'est ajouté que si `as === 'font'`
 - Évite les avertissements du navigateur lors du preload de feuilles CSS Google Fonts avec `as: 'style'`
-  
+
 <br>
 
 ---
@@ -32,9 +57,9 @@ et le projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ### ✨ Ajout
 
-- Ajout de la possibilité de surcharger l’attribut `as` dans `fontsToPreload`
+- Ajout de la possibilité de surcharger l'attribut `as` dans `fontsToPreload`
   - Utile pour précharger une feuille de style Google Fonts via `as: 'style'`
-  
+
 <br>
 
 ---
@@ -88,16 +113,16 @@ et le projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 - Première version de `vite-plugin-preload-assets`
 - Injection automatique des balises `<link rel="preload">` et `<link rel="preconnect">` au moment du build
 - Prise en charge de :
-  - Préchargement d’images via l’attribut `data-preload`
+  - Préchargement d'images via l'attribut `data-preload`
   - Préchargement de polices via la configuration (`fontsToPreload`)
-  - Détection dynamique des fichiers JS/CSS critiques à partir de noms d’entrée
+  - Détection dynamique des fichiers JS/CSS critiques à partir de noms d'entrée
   - Configuration dynamique par page avec `criticalJs` / `criticalCss` en fonction
   - Ajout automatique des balises `preconnect` pour Google Fonts
 
 ### 🛠️ Optimisation
 
 - Fonctionne sans configurer `rollupOptions.input` pour les sites multipages
-- N’insère que les ressources critiques nécessaires à chaque page
+- N'insère que les ressources critiques nécessaires à chaque page
 - Normalise le chemin HTML pour permettre une correspondance simple en config
 
 <br>
