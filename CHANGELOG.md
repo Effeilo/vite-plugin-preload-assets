@@ -15,23 +15,34 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 <br>
 
+## [1.3.1] – 2026-04-06
+
+### 🛠 Fixed
+
+- Added `rootDir` to `tsconfig.json` to resolve TypeScript 5.x error caused by missing explicit root directory when `declarationDir` is set
+- Updated `moduleResolution` from deprecated `"node"` to `"bundler"` for TypeScript 5.x compatibility
+
+---
+
+<br>
+
 ## [1.3.0] – 2026-04-01
 
 ### ✨ Added
 
 - **`srcset` support:** images with a `srcset` attribute now have all their candidate URLs preloaded automatically
 - **`fetchpriority="high"`** is now injected on all explicitly preloaded images (`data-preload` and `imagesToPreload`) to reinforce browser prioritization
-- **Tag deduplication:** identical preload hints (same `rel` + `href`) are deduplicated — no redundant tags even when the same URL appears in both HTML and config
+- **Tag deduplication:** identical preload hints (same `rel` + `href`) are deduplicated, no redundant tags even when the same URL appears in both HTML and config
 - **Unit tests:** 39 tests covering all features via [Vitest](https://vitest.dev)
 
 ### 🛠️ Fixed
 
-- **`crossorigin` now automatic for font preloads:** per the HTML spec, font preloads always require the `crossorigin` attribute — even for same-origin fonts. Omitting it caused the browser to silently discard the hint. The attribute is now added automatically when `as === 'font'`. No need to specify `crossorigin: true` for local fonts anymore
+- **`crossorigin` now automatic for font preloads:** per the HTML spec, font preloads always require the `crossorigin` attribute, even for same-origin fonts. Omitting it caused the browser to silently discard the hint. The attribute is now added automatically when `as === 'font'`. No need to specify `crossorigin: true` for local fonts anymore
 - **`rel="modulepreload"` for JS files:** replaced `rel="preload" as="script"` with `rel="modulepreload"`, which is semantically correct for Vite's ESM output and enables module graph parsing
-- **Attribute order independent image detection:** the `data-preload` attribute is now detected regardless of its position on the `<img>` tag — it no longer needs to come after `src`
+- **Attribute order independent image detection:** the `data-preload` attribute is now detected regardless of its position on the `<img>` tag, it no longer needs to come after `src`
 - **Removed unnecessary `crossorigin` on same-origin CSS preloads:** adding `crossorigin` to same-origin CSS preloads could cause cache mismatches; it is now omitted
 - **Removed dead code** in `criticalCss` / `criticalJs` resolution (unreachable branch `?.[currentPath]`)
-- **Removed redundant `ctx &&` guard** — `ctx` is always defined inside `transformIndexHtml`
+- **Removed redundant `ctx &&` guard**, `ctx` is always defined inside `transformIndexHtml`
 - **Typed `tags` array** as `HtmlTagDescriptor[]` instead of `any[]`
 
 <br>

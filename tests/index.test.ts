@@ -64,7 +64,7 @@ describe('getRelativeHtmlPath', () => {
   })
 })
 
-// ─── Image preloading — data-preload ─────────────────────────────────────────
+// ─── Image preloading, data-preload ─────────────────────────────────────────
 
 describe('image preloading via data-preload', () => {
   const plugin = preloadAssetsPlugin()
